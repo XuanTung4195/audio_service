@@ -353,6 +353,7 @@ public class AudioService extends MediaBrowserServiceCompat {
 
     public void stop() {
         deactivateMediaSession();
+        legacyStopForeground(!config.androidResumeOnClick);
         stopSelf();
     }
 
