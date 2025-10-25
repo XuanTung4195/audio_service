@@ -654,7 +654,6 @@ class MediaItem {
 
   /// Creates a copy of this [MediaItem] with with the given fields replaced by
   /// new values.
-  MediaItemCopyWith get copyWith => _MediaItemCopyWith(this);
 
   @override
   int get hashCode => id.hashCode;
@@ -681,6 +680,40 @@ class MediaItem {
 
   @override
   String toString() => '${_toMessage().toMap()}';
+
+  MediaItem copyWith({
+    String? id,
+    String? title,
+    String? album,
+    String? artist,
+    String? genre,
+    Duration? duration,
+    Uri? artUri,
+    Map<String, String>? artHeaders,
+    bool? playable,
+    String? displayTitle,
+    String? displaySubtitle,
+    String? displayDescription,
+    Rating? rating,
+    Map<String, dynamic>? extras,
+  }) {
+    return MediaItem(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      album: album ?? this.album,
+      artist: artist ?? this.artist,
+      genre: genre ?? this.genre,
+      duration: duration ?? this.duration,
+      artUri: artUri ?? this.artUri,
+      artHeaders: artHeaders ?? this.artHeaders,
+      playable: playable ?? this.playable,
+      displayTitle: displayTitle ?? this.displayTitle,
+      displaySubtitle: displaySubtitle ?? this.displaySubtitle,
+      displayDescription: displayDescription ?? this.displayDescription,
+      rating: rating ?? this.rating,
+      extras: extras ?? this.extras,
+    );
+  }
 }
 
 /// The `copyWith` function type for [MediaItem].
