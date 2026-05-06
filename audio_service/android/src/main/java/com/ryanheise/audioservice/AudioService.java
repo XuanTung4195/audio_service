@@ -374,6 +374,7 @@ public class AudioService extends MediaBrowserServiceCompat {
         compactActionIndices = null;
         releaseMediaSession();
         ServiceCompat.stopForeground(this, config.androidResumeOnClick ? STOP_FOREGROUND_DETACH : STOP_FOREGROUND_REMOVE);
+        legacyStopForeground(!config.androidResumeOnClick);
         // This still does not solve the Android 11 problem.
         // if (notificationCreated) {
         //     NotificationManager notificationManager = getNotificationManager();
@@ -382,6 +383,22 @@ public class AudioService extends MediaBrowserServiceCompat {
         releaseWakeLock();
         instance = null;
         notificationCreated = false;
+    }
+
+    @SuppressWarnings("deprecation")
+    private void legacyStopForeground(boolean removeNotification) {
+        try {
+            if (Build.VERSION.SDK_INT >= 24) {
+                // TODO: Consider application of STOP_FOREGROUND_DETACH
+                stopForeground(removeNotification ? STOP_FOREGROUND_REMOVE : 0);
+            } else {
+                // TODO: This API is deprecated and we'll need to eventually
+                // delete this line.
+                stopForeground(removeNotification);
+            }
+        } catch (java.lang.Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public AudioServiceConfig getConfig() {
@@ -721,6 +738,7 @@ public class AudioService extends MediaBrowserServiceCompat {
 
     private void exitForegroundState() {
         ServiceCompat.stopForeground(this, STOP_FOREGROUND_DETACH);
+        legacyStopForeground(false);
         releaseWakeLock();
     }
 
